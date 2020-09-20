@@ -1,0 +1,36 @@
+
+
+
+
+
+电脑上安装子系统 
+所出现g++安装问题解决：（之前出现问题的原因 安装包需要很多的依赖包 ）
+ 1.sudo mv /etc/apt/sources.list /etc/apt/sources.list.bak # 备份一下旧的源配置 
+2.sudo vim /etc/apt/sources.list
+
+3.
+deb https://mirrors.ustc.edu.cn/ubuntu/ bionic main restricted universe multiverse
+deb-src https://mirrors.ustc.edu.cn/ubuntu/ bionic main restricted universe multiverse
+
+deb https://mirrors.ustc.edu.cn/ubuntu/ bionic-security main restricted universe multiverse
+deb-src https://mirrors.ustc.edu.cn/ubuntu/ bionic-security main restricted universe multiverse
+
+deb https://mirrors.ustc.edu.cn/ubuntu/ bionic-updates main restricted universe multiverse
+deb-src https://mirrors.ustc.edu.cn/ubuntu/ bionic-updates main restricted universe multiverse
+
+deb https://mirrors.ustc.edu.cn/ubuntu/ bionic-backports main restricted universe multiverse
+deb-src https://mirrors.ustc.edu.cn/ubuntu/ bionic-backports main restricted universe multiverse
+
+## Not recommended
+# deb https://mirrors.ustc.edu.cn/ubuntu/ bionic-proposed main restricted universe multiverse
+# deb-src https://mirrors.ustc.edu.cn/ubuntu/ bionic-proposed main restricted universe multiverse
+
+
+4.sudo apt-get upgrade 
+5.sudo apt-get update
+6.sudo apt-get install g++
+
+
+
+
+

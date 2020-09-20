@@ -1,0 +1,127 @@
+//使用原因：方便代码的维护。比如，在C中没有bool型，于是在一个软件中，一个程序员使用int，一个程序员使用short，会比较混乱，最好用一个typedef来定义一个统一的bool，每个程序员都可以用这个别名的bool。
+#include<stdio.h>
+#include<time.h>
+#include<stdlib.h> //int8_t
+#include<stdint.h> //uint8_t
+int main() {
+	time_t t = time(NULL);
+	printf("sizeof(time_t)=%d\n",sizeof(time_t));
+	size_t s = 10;
+	printf("sizeof(size_t)=%d\n", sizeof(size_t));
+	int8_t a = 20;
+	printf("sizeof(int8_t)=%d\n", sizeof(int8_t));
+	uint8_t b = 30;
+	//typedef signed   char uint8_t;//无符号
+	printf("sizeof(uint8_t)=%d\n", sizeof(uint8_t));
+}
+
+
+//解决visual中因为 scanf存在的问题  ：
+更改预处理定义：
+        项目->属性->配置属性->C/C++ -> 预处理器 -> 预处理器定义，增加：
+            _CRT_SECURE_NO_DEPRECATE
+
+//解决 visual 中出现使用malloc realloc 函数出现的问题
+
+
+
+//注意区分malloc与calloc的区别
+//malloc 进行初始化数组时数组里面的值是随机的  calloc初始的值为0
+//类似calloc函数的还有memset函数 他也可以将数组变量初始化为0
+//每个函数的用法  malloc:  int *arr=(int *)malloc(n*sizeof(int));
+//calloc 函数 : int *arr=(int *)calloc(n,sizeof(int)); 
+//memset: int *arr=(int *)malloc(n*sizeof(int)); memset(arr,0,n*sizeof(int));   不管是哪种，都需要Free 掉
+//malloc  calloc  memset
+
+#include<stdio.h>
+#include<stdlib.h> 
+int main() {
+	/*
+	int n;
+	scanf("%d", &n);
+	int* arr = (int*)malloc(n * sizeof(int));
+	for (int i = 0; i < n; ++i) {
+		printf("arr[%d]=%d\n", i, arr[i]);
+	}
+	free(arr);
+	*/
+	int n;
+	scanf("%d",&n);
+	int* arr = (int*)calloc(n,sizeof(int));
+	for (int i = 0; i < n; ++i) {
+		printf("arr[%d]=%d\n", i, arr[i]);
+	}
+	free(arr);
+
+}
+
+
+//malloc  calloc  memset
+#include<stdio.h>
+#include<stdlib.h> //
+#include<string.h>//memset 函数的调用
+int main() {
+	/*
+	int n;
+	scanf("%d", &n);
+	int* arr = (int*)malloc(n * sizeof(int));
+	for (int i = 0; i < n; ++i) {
+		printf("arr[%d]=%d\n", i, arr[i]);
+	}
+	free(arr);
+	*/
+	/*
+	int n;
+	scanf("%d",&n);
+	int* arr = (int*)calloc(n,sizeof(int));
+	for (int i = 0; i < n; ++i) {
+		printf("arr[%d]=%d\n", i, arr[i]);
+	}
+	free(arr);
+	*/
+	int n;
+	scanf("%d",&n);
+	int* arr = (int*)malloc(n * sizeof(int));
+	memset(arr, 0, n * sizeof(int));
+	free(arr);
+}
+
+//注意在visual 中注意 使用memset 函数 必须引入头文件<string.h>   但是在visual 中存在报错
+
+
+
+//relloc函数的应用  
+
+//realloc 可变申请可变的内存情况
+
+
+#include<stdio.h>
+#include<stdlib.h> 
+int main() {
+	int  input,n;
+	int count = 0;
+	int* numbers = NULL;
+	int* more_numbers = NULL;
+	do {
+		printf("enter an integer value");
+		scanf("%d",&input);
+		count++;
+		more_numbers = (int*)realloc(numbers, count * sizeof(int));
+		if (more_numbers != NULL) {
+			numbers = more_numbers;
+			numbers[count - 1] = input;
+		}
+		else{
+			free(numbers);
+			puts("ERROR realloc memory");
+			exit(1);
+		}
+	} while (input != 0);
+		printf("numbers entered:");
+	for (n = 0; n < count; n++)printf("%d",numbers[n]);
+	free(numbers);
+	return 0;
+} 
+
+
+//注意：这里因为numbers指向的是more_numbers  relloc函数申请的内存 所以必须free掉  不然会造成内存泄漏
